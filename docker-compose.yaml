@@ -1,6 +1,67 @@
 version: '3'
 
 services:
+  # Airflow cluster
+  redis:
+    image: redis:latest
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+          
+  webserver:
+    image: puckel/docker-airflow:1.10.9
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - LOAD_EX=n
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - EXECUTOR=Celery
+    volumes:
+      - airflow_dags:/usr/local/airflow/dags
+    ports:
+      - "8080:8080"
+    command: webserver
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  scheduler:
+    image: puckel/docker-airflow:1.10.9
+    restart: always
+    depends_on:
+      - webserver
+    volumes:
+      - airflow_dags:/usr/local/airflow/dags      
+    environment:
+      - LOAD_EX=n
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - EXECUTOR=Celery
+    command: scheduler
+
+  worker:
+    image: puckel/docker-airflow:1.10.9
+    restart: always
+    depends_on:
+      - scheduler
+    volumes:
+      - airflow_dags:/usr/local/airflow/dags
+    environment:
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - EXECUTOR=Celery
+    command: worker
+
+  # MinIO cluster
   minio1:
     image: minio/minio:latest
     volumes:
@@ -36,5 +97,7 @@ services:
       - minio2
 
 volumes:
+  postgres_data:
+  airflow_dags:
   data1:
   data2:
