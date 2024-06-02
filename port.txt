@@ -1,0 +1,15 @@
+airflow-webserver
+    8282
+
+spark-iceberg
+    8888
+    8080
+    10000
+    10001
+
+rest
+    8181
+
+minio
+    9001
+    9000
