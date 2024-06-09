@@ -13,3 +13,9 @@ rest
 minio
     9001
     9000
+
+trino
+    8383
+
+hive-metastore
+    9083
