@@ -19,3 +19,6 @@ trino
 
 hive-metastore
     9083
+
+superset
+    8088

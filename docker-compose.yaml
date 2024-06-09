@@ -186,7 +186,7 @@ services:
 
   hive-metastore:
     container_name: hive-metastore
-    image: bitsondatadev/hive-metastore
+    image: starburstdata/hive:3.1.2-e.18
     depends_on:
       - metastore_db
     environment:
@@ -219,6 +219,18 @@ services:
     networks:
       shopee_net:
 
+  superset:
+    build: ./superset
+    container_name: superset
+    environment:
+      - SUPERSET_SECRET_KEY=secret
+    ports:
+      - "8088:8088"
+    networks:
+      shopee_net:
+    volumes:
+      - superset_data:/app/superset_home
+
 
 networks:
   shopee_net:
@@ -231,3 +243,4 @@ volumes:
   iceberg_notebooks:
   data:
   metastore_db:
+  superset_data:
