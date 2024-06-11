@@ -123,7 +123,7 @@ def format_json_schema(number_task, **kwargs):
                     result["discount"] = detail["discount"]
                     result["is_category_failed"] = detail["is_category_failed"]
                     result["size_chart"] = detail["size_chart"]
-                    result["rating_star"] = detail["item_rating"]["rating_star"]
+                    result["rating_star"] = float(detail["item_rating"]["rating_star"])
                     result["rating_count"] = detail["item_rating"]["rating_count"][0]
                     result["rating_count_1"] = detail["item_rating"]["rating_count"][1]
                     result["rating_count_2"] = detail["item_rating"]["rating_count"][2]
@@ -155,7 +155,7 @@ def format_json_schema(number_task, **kwargs):
                     result["has_model_with_available_shopee_stock"] = detail["has_model_with_available_shopee_stock"]
                     result["is_on_flash_sale"] = detail["is_on_flash_sale"]
                     result["shop_name"] = detail["shop_name"]
-                    result["shop_rating"] = detail["shop_rating"]
+                    result["shop_rating"] = float(detail["shop_rating"])
                     result["is_mart"] = detail["is_mart"]
                     result["is_service_by_shopee"] = detail["is_service_by_shopee"]
                     result["free_shipping_info"] = detail["free_shipping_info"]
@@ -238,9 +238,14 @@ def store_data_in_redis(number_task, **kwargs):
     ti = kwargs['ti']
     output = ti.xcom_pull(task_ids = 'format_json_schema' + number_task)
     r = redis.Redis(host = "redis", port = 6379, db = 0)
+    list_key = {}
+    list_key["0"] = len(output) + 1
 
     for i in range(len(output)):
-        r.set(number_task + str(i), json.dumps(output[i]))
+        r.set("today" + number_task + str(i), json.dumps(output[i]))
+        list_key[str(i + 1)] = "today" + number_task + str(i)
+
+    r.set("today_list_key" + number_task, json.dumps(list_key))
 
 store_data_task1 = PythonOperator(
     task_id = "store_data_in_redis1",

@@ -1,6 +1,15 @@
 from pyspark.sql.types import *
+from pyspark.sql.session import SparkSession
+from pyspark.context import SparkContext
+import redis
+import json
+from datetime import date
 
-schema = StructType([ 
+if __name__ == "__main__":
+  sc = SparkContext("spark://spark-iceberg:7077", "Process Shopee Data")
+  spark = SparkSession(sc)
+	
+  my_schema = StructType([ 
     StructField("grand_father_catid", LongType(), True), 
     StructField("grand_father_name", StringType(), True),
     StructField("grand_father_display_name", StringType(), True), 
@@ -110,3 +119,45 @@ schema = StructType([
     StructField("item_card_display_sold_count", LongType(), True),
     StructField("spl_installment_discount", StringType(), True),
   ])
+
+  today = date.today()
+  str_today = ""
+  if (today.day < 10):
+    str_today = "0" + str(today.day)
+    if (today.month < 10):
+      str_today += "0" + str(today.month)
+    else:
+      str_today += str(today.month)
+    str_today += str(today.year)
+  else:
+    str_today = str(today.day)
+    if (today.month < 10):
+      str_today += "0" + str(today.month)
+    else:
+      str_today += str(today.month)
+    str_today += str(today.year)
+    
+  r = redis.Redis(host = "redis", port = 6379, db = 0)
+  json_data = []
+  list_key = []
+
+  for i in range(1, 6):
+    key = "today_list_key" + str(i)
+    list_key_tmp = json.loads(r.get(key).decode("utf-8"))
+    
+    for j in range(1, list_key_tmp["0"]):
+      list_key.append(list_key_tmp[str(j)])
+
+    new_key = key.replace("today", str_today)
+    r.rename(key, new_key)
+
+  for i in range(0, len(list_key)):
+    json_data.append(json.loads(r.get(list_key[i]).decode("utf-8")))
+
+  df = spark.createDataFrame(data = json_data, schema = my_schema)
+
+  df.writeTo("vdt.shopee." + "day" + str_today).create()
+
+  for key in list_key:
+    new_key = key.replace("today", str_today)
+    r.rename(key, new_key)
