@@ -3,7 +3,7 @@ version: '3'
 services:
   # Airflow cluster
   redis:
-    image: redis:latest
+    image: redis
     container_name: redis
     networks:
       shopee_net:
@@ -11,7 +11,7 @@ services:
       - redis:/data
 
   postgres:
-    image: postgres:latest
+    image: postgres
     container_name: postgres
     environment:
       - POSTGRES_USER=airflow

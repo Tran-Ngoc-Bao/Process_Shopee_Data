@@ -154,7 +154,7 @@ if __name__ == "__main__":
   df = spark.createDataFrame(data = json_data, schema = my_schema)
 
   df.writeTo("shopee.today").tableProperty("location", "s3a://warehouse/shopee/today/").createOrReplace()
-  df.writeTo("shopee." + str_today).tableProperty("location", "s3a://warehouse/shopee/" + str_today).createOrReplace()
+  df.writeTo("shopee.day" + str_today).tableProperty("location", "s3a://warehouse/shopee/day" + str_today).createOrReplace()
 
   for i in range(1, 6):
     key = "today_list_key" + str(i)
