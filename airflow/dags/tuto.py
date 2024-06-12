@@ -155,7 +155,10 @@ def format_json_schema(number_task, **kwargs):
                     result["has_model_with_available_shopee_stock"] = detail["has_model_with_available_shopee_stock"]
                     result["is_on_flash_sale"] = detail["is_on_flash_sale"]
                     result["shop_name"] = detail["shop_name"]
-                    result["shop_rating"] = float(detail["shop_rating"])
+                    if detail["shop_rating"] is None:
+                        result["shop_rating"] = 0.0
+                    else:
+                        result["shop_rating"] = float(detail["shop_rating"])
                     result["is_mart"] = detail["is_mart"]
                     result["is_service_by_shopee"] = detail["is_service_by_shopee"]
                     result["free_shipping_info"] = detail["free_shipping_info"]

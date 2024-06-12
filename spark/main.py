@@ -119,7 +119,7 @@ if __name__ == "__main__":
     StructField("item_card_display_sold_count", LongType(), True),
     StructField("spl_installment_discount", StringType(), True),
   ])
-
+  
   today = date.today()
   str_today = ""
   if (today.day < 10):
@@ -148,15 +148,18 @@ if __name__ == "__main__":
     for j in range(1, list_key_tmp["0"]):
       list_key.append(list_key_tmp[str(j)])
 
-    new_key = key.replace("today", str_today)
-    r.rename(key, new_key)
-
   for i in range(0, len(list_key)):
     json_data.append(json.loads(r.get(list_key[i]).decode("utf-8")))
 
   df = spark.createDataFrame(data = json_data, schema = my_schema)
 
-  df.writeTo("vdt.shopee." + "day" + str_today).create()
+  df.writeTo("shopee.today").tableProperty("location", "s3a://warehouse/shopee/today/").createOrReplace()
+  df.writeTo("shopee." + str_today).tableProperty("location", "s3a://warehouse/shopee/" + str_today).createOrReplace()
+
+  for i in range(1, 6):
+    key = "today_list_key" + str(i)
+    new_key = key.replace("today", str_today)
+    r.rename(key, new_key)
 
   for key in list_key:
     new_key = key.replace("today", str_today)
