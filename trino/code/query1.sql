@@ -29,7 +29,7 @@ with (
     format = 'parquet',
     location = 's3a://warehouse/result_shopee/today/flash_sale_7h_12h/'
 ) as
-select itemid, name, sum(show_discount) / count(show_discount) as show_discount, from_unixtime(sum(update_time) / count(update_time)) as update_time 
+select itemid, name, sum(show_discount) / count(show_discount) as show_discount, sum(price_max / 100000) / count(price_max) as price, from_unixtime(sum(update_time) / count(update_time)) as update_time 
 from today 
 where update_time between 1717804800 and 1717822800 
 group by itemid, name;
@@ -53,7 +53,7 @@ with (
     format = 'parquet',
     location = 's3a://warehouse/result_shopee/today/flash_sale_13h_18h/'
 ) as
-select itemid, name, sum(show_discount) / count(show_discount) as show_discount, from_unixtime(sum(update_time) / count(update_time)) as update_time 
+select itemid, name, sum(show_discount) / count(show_discount) as show_discount, sum(price_max / 100000) / count(price_max) as price, from_unixtime(sum(update_time) / count(update_time)) as update_time 
 from today 
 where update_time between 1717912800 and 1717930800 
 group by itemid, name;
@@ -77,7 +77,7 @@ with (
     format = 'parquet',
     location = 's3a://warehouse/result_shopee/today/flash_sale_18h_24h/'
 ) as
-select itemid, name, sum(show_discount) / count(show_discount) as show_discount, from_unixtime(sum(update_time) / count(update_time)) as update_time 
+select itemid, name, sum(show_discount) / count(show_discount) as show_discount, sum(price_max / 100000) / count(price_max) as price, from_unixtime(sum(update_time) / count(update_time)) as update_time 
 from today 
 where update_time between 1718017200 and 1718038800 
 group by itemid, name;
