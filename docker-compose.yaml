@@ -76,7 +76,7 @@ services:
       shopee_net:
     volumes:
       - ./airflow/dags:/usr/local/airflow/dags
-      - ./demo_data/data:/usr/local/airflow/data
+      - ../data:/usr/local/airflow/data
     command: worker
 
 
