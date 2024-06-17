@@ -413,6 +413,3 @@ group by itemid, name;
 insert into liked_11116484_past
 select * 
 from liked_11116484_today;
-
-
-drop table today;
