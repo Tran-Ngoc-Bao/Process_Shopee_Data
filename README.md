@@ -44,7 +44,6 @@ docker compose up -d
 
   <li>After start system, all port website of containers in <a href="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/port.txt">here</a></li>
   <li>Start DAG in Airflow cluster</li>
-  <img style="width:75%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/system/airflow.png">
   <li>Move to spark-iceberg container</li>
 
 ```sh
@@ -57,7 +56,6 @@ docker exec -it spark-iceberg bash
 bin/spark-submit /home/iceberg/code/main.py
 ```
 
-  <img style="width:75%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/system/spark.png">
   <li>Move to trino container</li>
 
 ```sh
@@ -70,21 +68,10 @@ docker exec -it trino bash
 trino -f { /etc/trino/code/query1.sql, /etc/trino/code/query2.sql, /etc/trino/code/query3.sql, /etc/trino/code/query4.sql }
 ```
 
-  <img style="width:75%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/system/trino.png">
-
   <li>Visualize data in Superset website on local</li>
 </ul>
 
-## Demo
-### Store data in Redis
-<img style="width:75%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/system/redis.png">
-  
-### Store data in MinIO
-<img style="width:75%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/system/minio.png">
-  
-### Data warehouse on PostgreSQL & Hive
-<img style="width:75%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/system/hive_postgresql.png">
-
+## Output
 ### Top well-rated products by item
 <img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_rate_Balo_%26_Tui_Vi_Nam.jpg">
 
