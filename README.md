@@ -94,8 +94,8 @@ trino -f { /etc/trino/code/query1.sql, /etc/trino/code/query2.sql, /etc/trino/co
 ### Top products on strong sale
 <div>
   <img style="width:33%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_7h_12h_8_6.jpg">
-  <img style="width:33%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_13h_18h_9_6.jpg">
-  <img style="width:33%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_18h_24h_10_6.jpg">
+  <img style="width:32%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_13h_18h_9_6.jpg">
+  <img style="width:32%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_18h_24h_10_6.jpg">
 </div>
 
 ### Top products with the most comments
