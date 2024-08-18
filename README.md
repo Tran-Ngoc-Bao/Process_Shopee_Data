@@ -16,7 +16,7 @@
 
 ## System overview
 ### Data ingestion
-<img style="width:40%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/ThuThapDuLieu.png">
+<img style="width:60%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/ThuThapDuLieu.png">
   
 ### Data storage
 <img style="width:40%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/LuuTruDuLieu.png">
