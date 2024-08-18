@@ -2,7 +2,7 @@
 
 ## Project introduction
 <ul>
-  <li>Name of project: Analyze e-commerce information on Shopee</li>
+  <li>Name of project: Analyze e-commerce information on Shopee and Tiki</li>
   <li>Project objective:
     <ul>
       <li>Top well-rated products by item</li>
@@ -16,16 +16,16 @@
 
 ## System overview
 ### Data ingestion
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/ThuThapDuLieu.png">
+<img style="width:40%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/ThuThapDuLieu.png">
   
 ### Data storage
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/LuuTruDuLieu.png">
+<img style="width:40%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/LuuTruDuLieu.png">
   
 ### Process data
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/XuLyDuLieu.png">
+<img style="width:40%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/XuLyDuLieu.png">
   
 ### Visualize data
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/TrucQuanHoaDuLieu.png">
+<img style="width:20%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/TrucQuanHoaDuLieu.png">
 
 
 ## Deploy system
@@ -73,23 +73,21 @@ trino -f { /etc/trino/code/query1.sql, /etc/trino/code/query2.sql, /etc/trino/co
 
 ## Output
 ### Top well-rated products by item
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_rate_Balo_%26_Tui_Vi_Nam.jpg">
+<img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_rate_Balo_%26_Tui_Vi_Nam.jpg">
 
 ### Top liked products by item
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_like_Thoi_Trang_Nam.jpg">
+<img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_like_Thoi_Trang_Nam.jpg">
   
 ### Top products on strong sale
 <div>
-  <img style="width:33%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_7h_12h_8_6.jpg">
-  <img style="width:32%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_13h_18h_9_6.jpg">
-  <img style="width:32%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_18h_24h_10_6.jpg">
+  <img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_13h_18h_9_6.jpg">
 </div>
 
 ### Top products with the most comments
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_comment.jpg">
+<img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_comment.jpg">
 
 ### Top best selling products
-<img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_sold.jpg">
+<img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_sold.jpg">
 
 ## Report
 <ul>
