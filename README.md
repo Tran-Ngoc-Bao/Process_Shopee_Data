@@ -60,23 +60,15 @@ trino -f { /etc/trino/code/query1.sql, /etc/trino/code/query2.sql, /etc/trino/co
   <li>Visualize data in Superset website on local</li>
 </ul>
 
-## Output
+## Output (Shopee)
 ### Top well-rated products by item
 <img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_rate_Balo_%26_Tui_Vi_Nam.jpg">
 
 ### Top liked products by item
 <img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_like_Thoi_Trang_Nam.jpg">
-  
-### Top products on strong sale
-<div>
-  <img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/sale_13h_18h_9_6.jpg">
-</div>
 
 ### Top products with the most comments
 <img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_comment.jpg">
-
-### Top best selling products
-<img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_sold.jpg">
 
 ## Report
 <ul>
