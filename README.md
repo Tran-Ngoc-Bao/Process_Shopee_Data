@@ -14,19 +14,8 @@
   </li>
 </ul>
 
-## System overview
-### Data ingestion
-<img style="width:80%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/ThuThapDuLieu.png">
-  
-### Data storage
-<img style="width:80%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/LuuTruDuLieu.png">
-  
-### Process data
-<img style="width:80%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/XuLyDuLieu.png">
-  
-### Visualize data
-<img style="width:80%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/diagram/TrucQuanHoaDuLieu.png">
-
+## Data flow
+  <img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/DataFlow.png">
 
 ## Deploy system
 <ul>
