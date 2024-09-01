@@ -1,84 +1,78 @@
 version: '3'
 
+x-airflow-common:
+  &airflow-common
+  image: airflow
+  # build: ./airflow
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- apache-airflow-providers-microsoft-mssql}
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./airflow/scripts:/opt/airflow/scripts
+  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+  depends_on:
+    postgres:
+      condition: service_healthy
+  networks:
+    shopee_net:
+
 services:
   # Airflow cluster
-  redis:
-    image: redis
-    container_name: redis
-    networks:
-      shopee_net:
-    volumes:
-      - redis:/data
-
   postgres:
     image: postgres
     container_name: postgres
     environment:
-      - POSTGRES_USER=airflow
-      - POSTGRES_PASSWORD=airflow
-      - POSTGRES_DB=airflow
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    networks:
-      shopee_net:
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-          
-  airflow-webserver:
-    image: puckel/docker-airflow:1.10.9
-    container_name: airflow-webserver
-    depends_on:
-      - postgres
-      - redis
-    environment:
-      - LOAD_EX=n
-      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - EXECUTOR=Celery
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
     healthcheck:
-      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    ports:
-      - "8282:8080"
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
     restart: always
     networks:
       shopee_net:
     volumes:
-      - ./airflow/dags:/usr/local/airflow/dags
+      - postgres-db-volume:/var/lib/postgresql/data
+
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 8282:8080
+    restart: always
     command: webserver
 
   airflow-scheduler:
-    image: puckel/docker-airflow:1.10.9
+    <<: *airflow-common
     container_name: airflow-scheduler
-    depends_on:
-      - airflow-webserver
-    environment:
-      - LOAD_EX=n
-      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - EXECUTOR=Celery
     restart: always
-    networks:
-      shopee_net:
-    volumes:
-      - ./airflow/dags:/usr/local/airflow/dags      
     command: scheduler
 
-  airflow-worker:
-    image: puckel/docker-airflow:1.10.9
-    container_name: airflow-worker
-    depends_on:
-      - airflow-scheduler
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
     environment:
-      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - EXECUTOR=Celery
-    restart: always
-    networks:
-      shopee_net:
-    volumes:
-      - ./airflow/dags:/usr/local/airflow/dags
-      - ../data:/usr/local/airflow/data
-    command: worker
-
+      <<: *airflow-common-env
+      _AIRFLOW_DB_UPGRADE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+    command: version
 
   # Spark - Iceberg
   spark-iceberg:
@@ -118,7 +112,6 @@ services:
       - 8181:8181
     networks:
       shopee_net:
-
 
   # Minio cluster
   minio:
@@ -160,13 +153,12 @@ services:
       tail -f /dev/null
       "
 
-
   # Trino cluster
   trino:
     image: trinodb/trino
     container_name: trino
     ports:
-      - "8383:8080"
+      - 8383:8080
     networks:
       shopee_net:
     volumes:
@@ -187,8 +179,8 @@ services:
       - metastore_db:/var/lib/postgresql/data
 
   hive-metastore:
-    container_name: hive-metastore
     image: starburstdata/hive:3.1.2-e.18
+    container_name: hive-metastore
     depends_on:
       - metastore_db
     environment:
@@ -217,30 +209,28 @@ services:
       AZURE_WASB_ACCESS_KEY: ""
       HIVE_METASTORE_USERS_IN_ADMIN_ROLE: "admin"
     ports:
-      - '9083:9083' # Metastore Thrift
+      - 9083:9083 # Metastore Thrift
     networks:
       shopee_net:
 
   superset:
-    build: ./superset
+    image: superset
+    # build: ./superset
     container_name: superset
     environment:
       - SUPERSET_SECRET_KEY=secret
     ports:
-      - "8088:8088"
+      - 8088:8088
     networks:
       shopee_net:
     volumes:
       - superset_data:/app/superset_home
 
-
 networks:
   shopee_net:
 
-
 volumes:
-  redis:
-  postgres_data:
+  postgres-db-volume:
   iceberg_warehouse:
   iceberg_notebooks:
   data:

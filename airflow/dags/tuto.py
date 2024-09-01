@@ -2,7 +2,7 @@ import json
 import redis
 import os
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python_operator import PythonOperator # type: ignore
 from datetime import datetime, timedelta
 
 default_args = {
