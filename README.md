@@ -2,7 +2,7 @@
 
 ## Project introduction
 <ul>
-  <li>Name of project: Analyze e-commerce information on Shopee and Tiki</li>
+  <li>Name of project: Analyze e-commerce information on Shopee</li>
   <li>Project objective:
     <ul>
       <li>Top well-rated products by item</li>
@@ -60,7 +60,7 @@ trino -f { /etc/trino/code/query1.sql, /etc/trino/code/query2.sql, /etc/trino/co
   <li>Visualize data in Superset website on local</li>
 </ul>
 
-## Output (Shopee)
+## Output
 ### Top well-rated products by item
 <img style="width:70%" src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/output/top_rate_Balo_%26_Tui_Vi_Nam.jpg">
 
