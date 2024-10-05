@@ -2,7 +2,7 @@ import json
 import redis
 import os
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator # type: ignore
+from airflow.operators.python_operator import PythonOperator, BashOperator # type: ignore
 from datetime import datetime, timedelta
 
 default_args = {
@@ -290,9 +290,22 @@ store_data_task5 = PythonOperator(
     dag = dag,
 )
 
+spark_task = BashOperator(
+    task_id = "spark",
+    bash_command = 'spark-submit /opt/airflow/code/main.py',
+    dag = dag
+)
+
+trino_task = BashOperator(
+    task_id = "trino",
+    bash_command = 'cd /opt/airflow/trino && ./trino --server http://trino:8080 --file query1.sql query2.sql query3.sql query4.sql queryPlus.sql', 
+    dag = dag
+)
+
 create_tree_task >> [format_schema_task1, format_schema_task2, format_schema_task3, format_schema_task4, format_schema_task5]
-format_schema_task1 >> store_data_task1
-format_schema_task2 >> store_data_task2
-format_schema_task3 >> store_data_task3
-format_schema_task4 >> store_data_task4
-format_schema_task5 >> store_data_task5
+format_schema_task1 >> store_data_task1 >> spark_task
+format_schema_task2 >> store_data_task2 >> spark_task
+format_schema_task3 >> store_data_task3 >> spark_task
+format_schema_task4 >> store_data_task4 >> spark_task
+format_schema_task5 >> store_data_task5 >> spark_task
+spark_task >> trino_task

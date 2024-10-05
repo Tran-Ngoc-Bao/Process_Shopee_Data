@@ -18,47 +18,38 @@
   <img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/DataFlow.png">
 
 ## Deploy system
-<ul>
-  <li>You should download images before</li>
+#### 1. You should pull and build images in file docker-compose.yaml before
   
 ```sh
 docker pull { ... }
 ```
 
-  <li>Move to clone project and Start system</li>
+#### 2. Move to clone project and Start system
   
 ```sh
 docker compose up -d
 ```
 
-  <li>After start system, all port website of containers in <a href="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/port.txt">here</a></li>
-  <li>Start DAG in Airflow cluster</li>
-  <li>Move to spark-iceberg container</li>
+#### 3. Build enviroment on airflow-webserve and airflow-scheduler
 
 ```sh
-docker exec -it spark-iceberg bash
+docker exec -u root -it [airflow-webserver/airflow-scheduler] bash 
+source /opt/airflow/trino/build-env.sh
 ```
 
-  <li>Run code pyspark in spark-iceberg</li>
+#### 4. After start system, all port website of containers in <a href="https://github.com/Tran-Ngoc-Bao/Process_Shopee_Data/blob/master/port.txt">here</a>
 
+#### 5. Start DAG in Airflow cluster
+
+#### 6. Build enviroment Superset
 ```sh
-bin/spark-submit /home/iceberg/code/main.py
+./superset/bootstrap-superset.sh
 ```
-
-  <li>Move to trino container</li>
-
+  
+#### 7. Visualize data in Superset with SQLalchemy uri
 ```sh
-docker exec -it trino bash
+trino://hive@trino:8080/iceberg
 ```
-
-  <li>Run code sql in trino</li>
-
-```sh
-trino -f { /etc/trino/code/query1.sql, /etc/trino/code/query2.sql, /etc/trino/code/query3.sql, /etc/trino/code/query4.sql }
-```
-
-  <li>Visualize data in Superset website on local</li>
-</ul>
 
 ## Output
 ### Top well-rated products by item
