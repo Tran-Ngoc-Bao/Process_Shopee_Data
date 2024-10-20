@@ -18,36 +18,39 @@
   <img src="https://github.com/Tran-Ngoc-Bao/ProcessShopeeData/blob/master/illustration/DataFlow.png">
 
 ## Deploy system
-#### 1. You should pull and build images in file docker-compose.yaml before
-  
+#### 1. Should pull and build images before
 ```sh
-docker pull { ... }
+docker pull postgres tabulario/spark-iceberg tabulario/iceberg-rest minio/minio minio/mc trinodb/trino:457 starburstdata/hive:3.1.2-e.18
+```
+```sh
+docker build ./airflow -t airflow
+```
+```sh
+docker build ./superset -t superset
 ```
 
-#### 2. Move to clone project and Start system
-  
+#### 2. Start system
 ```sh
 docker compose up -d
 ```
 
-#### 3. Build enviroment on airflow-webserve and airflow-scheduler
-
+#### 3. Install java on airflow-webserver similar with airflow-scheduler
 ```sh
-docker exec -u root -it [airflow-webserver/airflow-scheduler] bash 
-source /opt/airflow/trino/build-env.sh
+docker exec -u root -it airflow-webserver bash
+```
+```sh
+apt update && apt install default-jdk
 ```
 
-#### 4. After start system, all port website of containers in <a href="https://github.com/Tran-Ngoc-Bao/Process_Shopee_Data/blob/master/port.txt">here</a>
+#### 4. Start DAG on Airflow cluster
 
-#### 5. Start DAG in Airflow cluster
-
-#### 6. Build enviroment Superset
+#### 5. Build enviroment Superset
 ```sh
 ./superset/bootstrap-superset.sh
 ```
   
-#### 7. Visualize data in Superset with SQLalchemy uri
-```sh
+#### 6. Visualize data in Superset with SQLalchemy uri
+```
 trino://hive@trino:8080/iceberg
 ```
 
